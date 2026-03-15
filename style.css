@@ -108,3 +108,22 @@ background:#2e7d32;
 color:white;
 
 }
+
+.container{
+
+max-width:900px;
+margin:auto;
+
+}
+
+table{
+
+font-size:14px;
+
+}
+
+input, select, textarea{
+
+font-size:16px;
+
+}
