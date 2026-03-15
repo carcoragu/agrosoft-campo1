@@ -185,3 +185,19 @@ window.onload = function(){
 forzarVistaEscritorio()
 
 }
+
+function ajustarVista(){
+
+let ancho = window.innerWidth
+
+if(ancho < 900){
+
+document.body.style.maxWidth = "900px"
+document.body.style.margin = "auto"
+
+}
+
+}
+
+window.addEventListener("load", ajustarVista)
+window.addEventListener("resize", ajustarVista)
