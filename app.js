@@ -169,3 +169,19 @@ XLSX.utils.book_append_sheet(wb3,ws3,"Gastos")
 XLSX.writeFile(wb3,"Gastos.xls")
 
 }
+
+function forzarVistaEscritorio(){
+
+if(window.innerWidth < 900){
+
+document.body.style.minWidth = "1200px"
+
+}
+
+}
+
+window.onload = function(){
+
+forzarVistaEscritorio()
+
+}
