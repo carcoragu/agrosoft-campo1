@@ -19,6 +19,39 @@ renderAnimales()
 
 }
 
+/* SPLASH */
+
+#splash{
+
+position:fixed;
+top:0;
+left:0;
+
+width:100%;
+height:100%;
+
+background:#2e7d32;
+
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+
+color:white;
+
+z-index:9999;
+
+transition:opacity 0.6s;
+
+}
+
+.logoSplash{
+
+width:120px;
+margin-bottom:20px;
+
+}
+
 function renderAnimales(){
 
 let tbody=document.querySelector("#tablaAnimales tbody")
