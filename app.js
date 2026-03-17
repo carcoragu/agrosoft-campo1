@@ -234,3 +234,25 @@ document.body.style.margin = "auto"
 
 window.addEventListener("load", ajustarVista)
 window.addEventListener("resize", ajustarVista)
+
+window.addEventListener("load", function () {
+
+setTimeout(function(){
+
+let splash = document.getElementById("splash")
+
+if(splash){
+
+splash.style.opacity="0"
+
+setTimeout(function(){
+
+splash.style.display="none"
+
+},600)
+
+}
+
+},1500)
+
+})
