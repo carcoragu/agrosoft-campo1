@@ -253,6 +253,37 @@ splash.style.display="none"
 
 }
 
+let deferredPrompt;
+
+window.addEventListener("beforeinstallprompt", (e) => {
+
+e.preventDefault();
+
+deferredPrompt = e;
+
+let boton = document.createElement("button");
+
+boton.innerText="Instalar App";
+
+boton.style.position="fixed";
+boton.style.bottom="20px";
+boton.style.right="20px";
+boton.style.padding="12px";
+boton.style.background="#2e7d32";
+boton.style.color="white";
+boton.style.border="none";
+boton.style.borderRadius="6px";
+
+document.body.appendChild(boton);
+
+boton.addEventListener("click", ()=>{
+
+deferredPrompt.prompt();
+
+});
+
+});
+  
 },1500)
 
 })
