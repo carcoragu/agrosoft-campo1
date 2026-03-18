@@ -61,7 +61,9 @@ let importe=Number(document.getElementById("importeGasto").value)
 
 let total=cantidad*importe
 
-gastos.push({fecha,tipo,total})
+let numeroCompra = document.getElementById("numeroCompra").value
+
+gastos.push({numeroCompra,fecha,tipo,total})
 
 renderGastos()
 
