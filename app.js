@@ -1,3 +1,7 @@
+function formatearNumero(num){
+return Number(num).toLocaleString("es-PY")
+}
+
 let animales=[]
 let gastos=[]
 let historial=[]
@@ -11,11 +15,10 @@ let peso=Number(document.getElementById("peso").value)
 let precioKg=Number(document.getElementById("precioKg").value)
 
 let total=peso*precioKg
-
-let numeroCompra = document.getElementById("numeroCompra").value
+let numeroCompra=document.getElementById("numeroCompra").value
 
 animales.push({numeroCompra,caravana,peso,precioKg,total})
-  
+
 renderAnimales()
 }
 
@@ -33,17 +36,17 @@ total+=a.total
 tbody.innerHTML+=`
 <tr>
 <td>${a.caravana}</td>
-<td>${a.peso}</td>
-<td>${a.precioKg}</td>
-<td>${a.total}</td>
+<td>${formatearNumero(a.peso)}</td>
+<td>${formatearNumero(a.precioKg)}</td>
+<td>${formatearNumero(a.total)}</td>
 <td><button onclick="eliminarAnimal(${i})">X</button></td>
 </tr>
 `
 })
 
-document.getElementById("totalAnimales").innerText=total
+document.getElementById("totalAnimales").innerText=formatearNumero(total)
 document.getElementById("dashAnimales").innerText=animales.length
-document.getElementById("dashTotalAnimales").innerText=total
+document.getElementById("dashTotalAnimales").innerText=formatearNumero(total)
 }
 
 function eliminarAnimal(i){
@@ -82,14 +85,14 @@ tbody.innerHTML+=`
 <td>${g.numeroCompra}</td>
 <td>${g.fecha}</td>
 <td>${g.tipo}</td>
-<td>${g.total}</td>
+<td>${formatearNumero(g.total)}</td>
 <td><button onclick="eliminarGasto(${i})">X</button></td>
 </tr>
 `
 })
 
-document.getElementById("totalGastos").innerText=total
-document.getElementById("dashTotalGastos").innerText=total
+document.getElementById("totalGastos").innerText=formatearNumero(total)
+document.getElementById("dashTotalGastos").innerText=formatearNumero(total)
 }
 
 function eliminarGasto(i){
@@ -101,28 +104,27 @@ function guardarCompra(){
 
 let numero=document.getElementById("numeroCompra").value
 
-// evitar duplicados
-let existe = historial.find(h => h.numero === numero)
+let existe=historial.find(h=>h.numero===numero)
 
 if(existe){
-alert("⚠️ Esta compra ya está guardada")
+alert("⚠️ Ya existe")
 return
 }
+
+let totalNumerico=animales.reduce((sum,a)=>sum+a.total,0)
 
 let compra={
 numero,
 fecha:document.getElementById("fechaCompra").value,
 proveedor:document.getElementById("proveedor").value,
-total:document.getElementById("totalAnimales").innerText
+total:totalNumerico
 }
 
 historial.push(compra)
 
-alert("✅ Compra guardada correctamente")
+alert("✅ Guardado")
 
-// generar nuevo número automáticamente
-document.getElementById("numeroCompra").value = Date.now()
-
+document.getElementById("numeroCompra").value=Date.now()
 }
 
 function exportarExcel(){
@@ -142,25 +144,11 @@ let ws3=XLSX.utils.json_to_sheet(gastos)
 XLSX.utils.book_append_sheet(wb3,ws3,"Gastos")
 XLSX.writeFile(wb3,"Gastos.xls")
 
-alert("📊 Archivos exportados correctamente")
+alert("📊 Exportado correctamente")
 }
-/* SPLASH */
+
 window.onload=function(){
 setTimeout(()=>{
 document.getElementById("splash").style.display="none"
 },1500)
 }
-
-/* INSTALAR AUTOMATICO */
-let deferredPrompt;
-
-window.addEventListener("beforeinstallprompt",(e)=>{
-e.preventDefault();
-deferredPrompt=e;
-
-setTimeout(()=>{
-if(deferredPrompt){
-deferredPrompt.prompt();
-}
-},2000);
-});
