@@ -164,7 +164,7 @@ XLSX.writeFile(wb3,"Gastos.xls")
 alert("📊 Exportado correctamente")
 }
 
-window.onload=function{
+window.onload=function(){
 
 setTimeout(()=>{
 document.getElementById("splash").style.display="none"
