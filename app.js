@@ -15,7 +15,6 @@ let total=peso*precioKg
 animales.push({caravana,peso,precioKg,total})
 
 renderAnimales()
-
 }
 
 function renderAnimales(){
@@ -38,13 +37,11 @@ tbody.innerHTML+=`
 <td><button onclick="eliminarAnimal(${i})">X</button></td>
 </tr>
 `
-
 })
 
 document.getElementById("totalAnimales").innerText=total
 document.getElementById("dashAnimales").innerText=animales.length
 document.getElementById("dashTotalAnimales").innerText=total
-
 }
 
 function eliminarAnimal(i){
@@ -54,6 +51,7 @@ renderAnimales()
 
 function agregarGasto(){
 
+let numeroCompra=document.getElementById("numeroCompra").value
 let fecha=document.getElementById("fechaGasto").value
 let tipo=document.getElementById("tipoGasto").value
 let cantidad=Number(document.getElementById("cantidadGasto").value)
@@ -61,12 +59,9 @@ let importe=Number(document.getElementById("importeGasto").value)
 
 let total=cantidad*importe
 
-let numeroCompra = document.getElementById("numeroCompra").value
-
 gastos.push({numeroCompra,fecha,tipo,total})
 
 renderGastos()
-
 }
 
 function renderGastos(){
@@ -82,18 +77,17 @@ total+=g.total
 
 tbody.innerHTML+=`
 <tr>
+<td>${g.numeroCompra}</td>
 <td>${g.fecha}</td>
 <td>${g.tipo}</td>
 <td>${g.total}</td>
 <td><button onclick="eliminarGasto(${i})">X</button></td>
 </tr>
 `
-
 })
 
 document.getElementById("totalGastos").innerText=total
 document.getElementById("dashTotalGastos").innerText=total
-
 }
 
 function eliminarGasto(i){
@@ -113,7 +107,6 @@ total:document.getElementById("totalAnimales").innerText
 historial.push(compra)
 
 alert("Guardado correctamente")
-
 }
 
 function exportarExcel(){
@@ -132,36 +125,25 @@ let wb3=XLSX.utils.book_new()
 let ws3=XLSX.utils.json_to_sheet(gastos)
 XLSX.utils.book_append_sheet(wb3,ws3,"Gastos")
 XLSX.writeFile(wb3,"Gastos.xls")
-
 }
 
 /* SPLASH */
 window.onload=function(){
-
 setTimeout(()=>{
-let splash=document.getElementById("splash")
-splash.style.display="none"
+document.getElementById("splash").style.display="none"
 },1500)
-
 }
 
-/* INSTALAR APP */
-let deferredPrompt
+/* INSTALAR AUTOMATICO */
+let deferredPrompt;
 
-window.addEventListener("beforeinstallprompt", (e)=>{
+window.addEventListener("beforeinstallprompt",(e)=>{
+e.preventDefault();
+deferredPrompt=e;
 
-e.preventDefault()
-
-deferredPrompt=e
-
-let btn=document.createElement("button")
-btn.innerText="Instalar App"
-btn.style.position="fixed"
-btn.style.bottom="20px"
-btn.style.right="20px"
-
-document.body.appendChild(btn)
-
-btn.onclick=()=>deferredPrompt.prompt()
-
-})
+setTimeout(()=>{
+if(deferredPrompt){
+deferredPrompt.prompt();
+}
+},2000);
+});
