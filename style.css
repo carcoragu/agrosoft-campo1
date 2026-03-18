@@ -3,6 +3,21 @@ font-family:Arial;
 margin:0;
 background:#0d1b2a;
 color:white;
+overflow-x:hidden;
+}
+
+#bloqueo{
+display:none;
+position:fixed;
+width:100%;
+height:100%;
+background:black;
+z-index:99999;
+color:white;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+text-align:center;
 }
 
 #splash{
@@ -19,13 +34,12 @@ z-index:9999;
 
 .logoSplash{
 width:120px;
-margin-bottom:20px;
 }
 
 header{
 display:flex;
-justify-content:space-between;
 align-items:center;
+justify-content:space-between;
 padding:15px;
 background:#1b263b;
 }
@@ -35,13 +49,13 @@ height:45px;
 }
 
 .titulo{
-text-align:center;
 flex:1;
+text-align:center;
 }
 
 .dashboard{
 display:grid;
-grid-template-columns: repeat(auto-fit, minmax(150px,1fr));
+grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
 gap:15px;
 padding:15px;
 max-width:900px;
@@ -56,20 +70,20 @@ text-align:center;
 }
 
 .container{
-width:95%;
+width:92%;
 max-width:900px;
 margin:20px auto;
 background:#1b263b;
-padding:20px;
-border-radius:10px;
+padding:25px 20px;
+border-radius:12px;
 }
 
-input, select{
+input,select{
 width:100%;
 padding:12px;
 margin-bottom:12px;
-border-radius:8px;
 border:none;
+border-radius:8px;
 }
 
 button{
