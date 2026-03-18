@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="es">
- 
 <head>
 
 <meta charset="UTF-8">
@@ -9,7 +8,7 @@
 <title>AgroSoft Campo</title>
 
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#2e7d32">
+<meta name="theme-color" content="#0d1b2a">
 
 <link rel="stylesheet" href="style.css">
 
@@ -17,27 +16,30 @@
 
 <body>
 
+<!-- SPLASH -->
+<div id="splash">
+<img src="logo_fainver.png" class="logoSplash">
+<h1>AgroSoft Campo</h1>
+<p>Registro de Compras y Gastos en Ganadería</p>
+</div>
+
 <header>
 
-<div class="logo">
 <img src="logo_fainver.png">
-</div>
 
 <div class="titulo">
 <h1>AgroSoft Campo</h1>
 <p>Registro de Compras y Gastos en Ganadería</p>
 </div>
 
-<div class="logo2">
 <img src="logoisabsoft.png">
-</div>
 
 </header>
 
 <div class="dashboard">
 
 <div class="card">
-<h3>Animales cargados</h3>
+<h3>Animales</h3>
 <span id="dashAnimales">0</span>
 </div>
 
@@ -47,7 +49,7 @@
 </div>
 
 <div class="card">
-<h3>Total Gastos</h3>
+<h3>Gastos</h3>
 <span id="dashTotalGastos">0</span>
 </div>
 
@@ -55,9 +57,9 @@
 
 <div class="container">
 
-<h2>Datos de Compra</h2>
+<h2>Datos de la Compra</h2>
 
-<label>Nº Compra</label>
+<label>N° Compra</label>
 <input id="numeroCompra" readonly>
 
 <label>Fecha</label>
@@ -76,47 +78,33 @@
 
 <h2>Animales</h2>
 
-<label>Caravana</label>
-<input id="caravana">
-
-<label>Peso</label>
-<input type="number" id="peso">
-
-<label>Precio Kg</label>
-<input type="number" id="precioKg">
-
-<label>Precio Animal</label>
-<input type="number" id="precioAnimal">
+<input placeholder="Caravana" id="caravana">
+<input type="number" placeholder="Peso" id="peso">
+<input type="number" placeholder="Precio Kg" id="precioKg">
+<input type="number" placeholder="Precio Animal" id="precioAnimal">
 
 <button onclick="agregarAnimal()">Agregar Animal</button>
 
 <table id="tablaAnimales">
-
 <thead>
 <tr>
 <th>Caravana</th>
 <th>Peso</th>
 <th>Precio Kg</th>
-<th>Precio Animal</th>
 <th>Total</th>
 <th>X</th>
 </tr>
 </thead>
-
 <tbody></tbody>
-
 </table>
 
-<p>Total Animales: ₲ <span id="totalAnimales">0</span></p>
+<p>Total: ₲ <span id="totalAnimales">0</span></p>
 
 <hr>
 
 <h2>Gastos</h2>
 
-<label>Fecha</label>
 <input type="date" id="fechaGasto">
-
-<label>Tipo</label>
 
 <select id="tipoGasto">
 <option>Flete</option>
@@ -125,78 +113,40 @@
 <option>Varios</option>
 </select>
 
-<label>Cantidad</label>
-<input type="number" id="cantidadGasto">
-
-<label>Importe</label>
-<input type="number" id="importeGasto">
-
-<label>Observación</label>
-<textarea id="obsGasto"></textarea>
+<input type="number" placeholder="Cantidad" id="cantidadGasto">
+<input type="number" placeholder="Importe" id="importeGasto">
+<textarea placeholder="Observación" id="obsGasto"></textarea>
 
 <button onclick="agregarGasto()">Agregar Gasto</button>
 
 <table id="tablaGastos">
-
 <thead>
 <tr>
 <th>Fecha</th>
 <th>Tipo</th>
 <th>Total</th>
-<th>Obs</th>
 <th>X</th>
 </tr>
 </thead>
-
 <tbody></tbody>
-
 </table>
 
 <p>Total Gastos: ₲ <span id="totalGastos">0</span></p>
 
 <hr>
 
-<button onclick="guardarCompra()">Guardar Compra</button>
-
+<button onclick="guardarCompra()">Guardar</button>
 <button onclick="exportarExcel()">Exportar Excel</button>
-
-<hr>
-
-<h2>Historial de Compras</h2>
-
-<table id="tablaHistorial">
-
-<thead>
-<tr>
-<th>N°</th>
-<th>Fecha</th>
-<th>Proveedor</th>
-<th>Total</th>
-</tr>
-</thead>
-
-<tbody></tbody>
-
-</table>
 
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
-
 <script src="app.js"></script>
 
 <script>
-
 if ("serviceWorker" in navigator) {
-
-window.addEventListener("load",function(){
-
 navigator.serviceWorker.register("sw.js")
-
-})
-
 }
-
 </script>
 
 </body>
