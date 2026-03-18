@@ -1,4 +1,4 @@
-const CACHE="agrosoft-v5";
+const CACHE="agrosoft-v6";
 
 self.addEventListener("install",e=>{
 e.waitUntil(
