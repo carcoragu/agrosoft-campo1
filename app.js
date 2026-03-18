@@ -2,7 +2,7 @@ function formatearNumero(num){
 return Number(num).toLocaleString("es-PY")
 }
 
-/* LICENCIA 30 DIAS */
+/* LICENCIA */
 function verificarLicencia(){
 let inicio=localStorage.getItem("inicio")
 if(!inicio){
@@ -23,32 +23,33 @@ let historial=[]
 
 document.getElementById("numeroCompra").value=Date.now()
 
-function calcularCostoReal(a,g,c){
-if(c===0)return 0
-return (a+g)/c
-}
-
 function agregarAnimal(){
-if(!verificarLicencia())return
 
-let caravana=caravana.value
-let peso=Number(peso.value)
-let precioKg=Number(precioKg.value)
+if(!verificarLicencia()) return
+
+let caravana=document.getElementById("caravana").value
+let peso=Number(document.getElementById("peso").value)
+let precioKg=Number(document.getElementById("precioKg").value)
 
 let total=peso*precioKg
 let numeroCompra=document.getElementById("numeroCompra").value
 
 animales.push({numeroCompra,caravana,peso,precioKg,total})
+
 renderAnimales()
 }
 
 function renderAnimales(){
+
 let tbody=document.querySelector("#tablaAnimales tbody")
 tbody.innerHTML=""
+
 let total=0
 
 animales.forEach((a,i)=>{
+
 total+=a.total
+
 tbody.innerHTML+=`
 <tr>
 <td>${a.caravana}</td>
@@ -56,7 +57,8 @@ tbody.innerHTML+=`
 <td>${formatearNumero(a.precioKg)}</td>
 <td>${formatearNumero(a.total)}</td>
 <td><button onclick="eliminarAnimal(${i})">X</button></td>
-</tr>`
+</tr>
+`
 })
 
 document.getElementById("totalAnimales").innerText=formatearNumero(total)
@@ -72,27 +74,33 @@ renderAnimales()
 }
 
 function agregarGasto(){
-if(!verificarLicencia())return
 
-let numeroCompra=numeroCompra.value
-let fecha=fechaGasto.value
-let tipo=tipoGasto.value
-let cantidad=Number(cantidadGasto.value)
-let importe=Number(importeGasto.value)
+if(!verificarLicencia()) return
+
+let numeroCompra=document.getElementById("numeroCompra").value
+let fecha=document.getElementById("fechaGasto").value
+let tipo=document.getElementById("tipoGasto").value
+let cantidad=Number(document.getElementById("cantidadGasto").value)
+let importe=Number(document.getElementById("importeGasto").value)
 
 let total=cantidad*importe
 
 gastos.push({numeroCompra,fecha,tipo,total})
+
 renderGastos()
 }
 
 function renderGastos(){
+
 let tbody=document.querySelector("#tablaGastos tbody")
 tbody.innerHTML=""
-let totalG=0
+
+let total=0
 
 gastos.forEach((g,i)=>{
-totalG+=g.total
+
+total+=g.total
+
 tbody.innerHTML+=`
 <tr>
 <td>${g.numeroCompra}</td>
@@ -100,14 +108,15 @@ tbody.innerHTML+=`
 <td>${g.tipo}</td>
 <td>${formatearNumero(g.total)}</td>
 <td><button onclick="eliminarGasto(${i})">X</button></td>
-</tr>`
+</tr>
+`
 })
 
-document.getElementById("totalGastos").innerText=formatearNumero(totalG)
-document.getElementById("dashTotalGastos").innerText=formatearNumero(totalG)
+document.getElementById("totalGastos").innerText=formatearNumero(total)
+document.getElementById("dashTotalGastos").innerText=formatearNumero(total)
 
 let totalA=animales.reduce((s,a)=>s+a.total,0)
-let costo=calcularCostoReal(totalA,totalG,animales.length)
+let costo=(totalA+total)/animales.length || 0
 
 document.getElementById("costoReal").innerText=formatearNumero(Math.round(costo))
 }
@@ -118,9 +127,10 @@ renderGastos()
 }
 
 function guardarCompra(){
-if(!verificarLicencia())return
 
-let numero=numeroCompra.value
+if(!verificarLicencia()) return
+
+let numero=document.getElementById("numeroCompra").value
 
 if(historial.find(h=>h.numero===numero)){
 alert("⚠️ Ya existe")
@@ -129,12 +139,12 @@ return
 
 let totalA=animales.reduce((s,a)=>s+a.total,0)
 let totalG=gastos.reduce((s,g)=>s+g.total,0)
-let costo=calcularCostoReal(totalA,totalG,animales.length)
+let costo=(totalA+totalG)/animales.length || 0
 
 historial.push({
 numero,
-fecha:fechaCompra.value,
-proveedor:proveedor.value,
+fecha:document.getElementById("fechaCompra").value,
+proveedor:document.getElementById("proveedor").value,
 totalAnimales:totalA,
 totalGastos:totalG,
 costoReal:Math.round(costo)
@@ -142,11 +152,14 @@ costoReal:Math.round(costo)
 
 alert("✅ Guardado")
 
-numeroCompra.value=Date.now()
+document.getElementById("numeroCompra").value=Date.now()
 }
 
 function exportarExcel(){
-if(!verificarLicencia())return
+
+if(!verificarLicencia()) return
+
+XLSX.writeFile(XLSX.utils.book_new(),"Compras.xls")
 
 let wb1=XLSX.utils.book_new()
 XLSX.utils.book_append_sheet(wb1,XLSX.utils.json_to_sheet(historial),"Compras")
@@ -164,6 +177,6 @@ alert("📊 Exportado correctamente")
 }
 
 window.onload=function(){
-if(!verificarLicencia())return
-setTimeout(()=>splash.style.display="none",1500)
+if(!verificarLicencia()) return
+setTimeout(()=>document.getElementById("splash").style.display="none",1500)
 }
