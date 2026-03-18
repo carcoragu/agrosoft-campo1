@@ -2,13 +2,45 @@ function formatearNumero(num){
 return Number(num).toLocaleString("es-PY")
 }
 
+/* =========================
+   CONTROL 30 DIAS
+========================= */
+
+function verificarLicencia(){
+
+let inicio = localStorage.getItem("fechaInicio")
+
+if(!inicio){
+localStorage.setItem("fechaInicio", Date.now())
+return true
+}
+
+let dias = (Date.now() - Number(inicio)) / (1000*60*60*24)
+
+if(dias > 30){
+document.getElementById("bloqueo").style.display="flex"
+return false
+}
+
+return true
+}
+
+/* ========================= */
+
 let animales=[]
 let gastos=[]
 let historial=[]
 
 document.getElementById("numeroCompra").value=Date.now()
 
+function calcularCostoReal(totalAnimales,totalGastos,cantidad){
+if(cantidad===0) return 0
+return (totalAnimales + totalGastos) / cantidad
+}
+
 function agregarAnimal(){
+
+if(!verificarLicencia()) return
 
 let caravana=document.getElementById("caravana").value
 let peso=Number(document.getElementById("peso").value)
@@ -47,6 +79,8 @@ tbody.innerHTML+=`
 document.getElementById("totalAnimales").innerText=formatearNumero(total)
 document.getElementById("dashAnimales").innerText=animales.length
 document.getElementById("dashTotalAnimales").innerText=formatearNumero(total)
+
+renderGastos()
 }
 
 function eliminarAnimal(i){
@@ -55,6 +89,8 @@ renderAnimales()
 }
 
 function agregarGasto(){
+
+if(!verificarLicencia()) return
 
 let numeroCompra=document.getElementById("numeroCompra").value
 let fecha=document.getElementById("fechaGasto").value
@@ -74,11 +110,11 @@ function renderGastos(){
 let tbody=document.querySelector("#tablaGastos tbody")
 tbody.innerHTML=""
 
-let total=0
+let totalGastos=0
 
 gastos.forEach((g,i)=>{
 
-total+=g.total
+totalGastos+=g.total
 
 tbody.innerHTML+=`
 <tr>
@@ -91,8 +127,13 @@ tbody.innerHTML+=`
 `
 })
 
-document.getElementById("totalGastos").innerText=formatearNumero(total)
-document.getElementById("dashTotalGastos").innerText=formatearNumero(total)
+document.getElementById("totalGastos").innerText=formatearNumero(totalGastos)
+document.getElementById("dashTotalGastos").innerText=formatearNumero(totalGastos)
+
+let totalAnimales=animales.reduce((sum,a)=>sum+a.total,0)
+let costoReal=calcularCostoReal(totalAnimales,totalGastos,animales.length)
+
+document.getElementById("costoReal").innerText=formatearNumero(Math.round(costoReal))
 }
 
 function eliminarGasto(i){
@@ -101,6 +142,8 @@ renderGastos()
 }
 
 function guardarCompra(){
+
+if(!verificarLicencia()) return
 
 let numero=document.getElementById("numeroCompra").value
 
@@ -111,23 +154,29 @@ alert("⚠️ Ya existe")
 return
 }
 
-let totalNumerico=animales.reduce((sum,a)=>sum+a.total,0)
+let totalAnimales=animales.reduce((sum,a)=>sum+a.total,0)
+let totalGastos=gastos.reduce((sum,g)=>sum+g.total,0)
+let costoReal=calcularCostoReal(totalAnimales,totalGastos,animales.length)
 
 let compra={
 numero,
 fecha:document.getElementById("fechaCompra").value,
 proveedor:document.getElementById("proveedor").value,
-total:totalNumerico
+totalAnimales,
+totalGastos,
+costoReal:Math.round(costoReal)
 }
 
 historial.push(compra)
 
-alert("✅ Guardado")
+alert("✅ Guardado correctamente")
 
 document.getElementById("numeroCompra").value=Date.now()
 }
 
 function exportarExcel(){
+
+if(!verificarLicencia()) return
 
 let wb1=XLSX.utils.book_new()
 let ws1=XLSX.utils.json_to_sheet(historial)
@@ -148,7 +197,11 @@ alert("📊 Exportado correctamente")
 }
 
 window.onload=function(){
+
+if(!verificarLicencia()) return
+
 setTimeout(()=>{
 document.getElementById("splash").style.display="none"
 },1500)
+
 }
