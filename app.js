@@ -124,6 +124,7 @@ alert("✅ Compra guardada correctamente")
 document.getElementById("numeroCompra").value = Date.now()
 
 }
+
 function exportarExcel(){
 
 let wb1=XLSX.utils.book_new()
@@ -140,8 +141,9 @@ let wb3=XLSX.utils.book_new()
 let ws3=XLSX.utils.json_to_sheet(gastos)
 XLSX.utils.book_append_sheet(wb3,ws3,"Gastos")
 XLSX.writeFile(wb3,"Gastos.xls")
-}
 
+alert("📊 Archivos exportados correctamente")
+}
 /* SPLASH */
 window.onload=function(){
 setTimeout(()=>{
