@@ -16,13 +16,11 @@
 
 <body>
 
-<!-- BLOQUEO -->
 <div id="bloqueo">
 <h1>⛔ Licencia Expirada</h1>
-<p>El período de prueba ha finalizado.</p>
+<p>Contacte para continuar.</p>
 </div>
 
-<!-- SPLASH -->
 <div id="splash">
 <img src="logo_fainver.png" class="logoSplash">
 <h1>AgroSoft Campo</h1>
@@ -50,28 +48,19 @@
 
 <h2>Datos de la Compra</h2>
 
-<label>N° Compra</label>
 <input id="numeroCompra" readonly>
-
-<label>Fecha</label>
 <input type="date" id="fechaCompra">
-
-<label>Proveedor</label>
-<input id="proveedor">
-
-<label>CI / RUC</label>
-<input id="ci">
-
-<label>Documento</label>
-<input id="documento">
+<input id="proveedor" placeholder="Proveedor">
+<input id="ci" placeholder="CI / RUC">
+<input id="documento" placeholder="Documento">
 
 <hr>
 
 <h2>Animales</h2>
 
-<input placeholder="Caravana" id="caravana">
-<input type="number" placeholder="Peso" id="peso">
-<input type="number" placeholder="Precio Kg" id="precioKg">
+<input id="caravana" placeholder="Caravana">
+<input type="number" id="peso" placeholder="Peso">
+<input type="number" id="precioKg" placeholder="Precio Kg">
 
 <button onclick="agregarAnimal()">Agregar Animal</button>
 
@@ -91,7 +80,7 @@
 </div>
 
 <p>Total: ₲ <span id="totalAnimales">0</span></p>
-<p>Costo real por animal: ₲ <span id="costoReal">0</span></p>
+<p>Costo real: ₲ <span id="costoReal">0</span></p>
 
 <hr>
 
@@ -106,8 +95,8 @@
 <option>Varios</option>
 </select>
 
-<input type="number" placeholder="Cantidad" id="cantidadGasto">
-<input type="number" placeholder="Importe" id="importeGasto">
+<input type="number" id="cantidadGasto" placeholder="Cantidad">
+<input type="number" id="importeGasto" placeholder="Importe">
 
 <button onclick="agregarGasto()">Agregar Gasto</button>
 
