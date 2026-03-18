@@ -28,41 +28,45 @@ header{
 display:flex;
 justify-content:space-between;
 align-items:center;
-padding:15px;
+padding:10px;
 background:#1b263b;
+flex-wrap:wrap;
 }
 
 header img{
-height:50px;
+height:40px;
 }
 
+/* TITULO */
 .titulo{
 text-align:center;
+width:100%;
 }
 
 /* DASHBOARD */
 .dashboard{
 display:flex;
-justify-content:center;
-gap:20px;
-padding:20px;
 flex-wrap:wrap;
+justify-content:center;
+gap:10px;
+padding:10px;
 }
 
 .card{
 background:#1b263b;
-padding:20px;
+padding:15px;
 border-radius:10px;
 text-align:center;
-width:150px;
+flex:1 1 120px;
 }
 
-/* CONTENIDO */
+/* CONTENEDOR */
 .container{
-width:900px; /* FUERZA FORMATO ESCRITORIO */
+width:95%;
+max-width:900px;
 margin:auto;
 background:#1b263b;
-padding:20px;
+padding:15px;
 border-radius:10px;
 }
 
@@ -74,6 +78,7 @@ margin-top:5px;
 margin-bottom:10px;
 border:none;
 border-radius:6px;
+font-size:16px;
 }
 
 /* BOTONES */
@@ -85,13 +90,18 @@ border:none;
 color:white;
 border-radius:6px;
 margin-top:10px;
+font-size:16px;
 }
 
 /* TABLAS */
+.table-container{
+overflow-x:auto;
+}
+
 table{
 width:100%;
-margin-top:10px;
 border-collapse:collapse;
+min-width:600px;
 }
 
 th, td{
@@ -102,17 +112,4 @@ text-align:center;
 
 th{
 background:#2a9d8f;
-}
-
-/* 🔥 CLAVE: FORZAR ESCRITORIO EN MOVIL */
-@media (max-width: 900px){
-
-body{
-overflow-x:auto;
-}
-
-.container{
-width:900px;
-}
-
 }
