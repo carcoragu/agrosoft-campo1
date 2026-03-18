@@ -12,8 +12,10 @@ let precioKg=Number(document.getElementById("precioKg").value)
 
 let total=peso*precioKg
 
-animales.push({caravana,peso,precioKg,total})
+let numeroCompra = document.getElementById("numeroCompra").value
 
+animales.push({numeroCompra,caravana,peso,precioKg,total})
+  
 renderAnimales()
 }
 
@@ -97,8 +99,18 @@ renderGastos()
 
 function guardarCompra(){
 
+let numero=document.getElementById("numeroCompra").value
+
+// evitar duplicados
+let existe = historial.find(h => h.numero === numero)
+
+if(existe){
+alert("⚠️ Esta compra ya está guardada")
+return
+}
+
 let compra={
-numero:document.getElementById("numeroCompra").value,
+numero,
 fecha:document.getElementById("fechaCompra").value,
 proveedor:document.getElementById("proveedor").value,
 total:document.getElementById("totalAnimales").innerText
@@ -106,9 +118,12 @@ total:document.getElementById("totalAnimales").innerText
 
 historial.push(compra)
 
-alert("Guardado correctamente")
-}
+alert("✅ Compra guardada correctamente")
 
+// generar nuevo número automáticamente
+document.getElementById("numeroCompra").value = Date.now()
+
+}
 function exportarExcel(){
 
 let wb1=XLSX.utils.book_new()
