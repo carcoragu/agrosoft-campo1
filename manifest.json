@@ -3,8 +3,8 @@
 "short_name":"AgroSoft",
 "start_url":"index.html",
 "display":"standalone",
-"background_color":"#ffffff",
-"theme_color":"#2e7d32",
+"background_color":"#0d1b2a",
+"theme_color":"#0d1b2a",
 "icons":[
 {
 "src":"icon-192.png",
