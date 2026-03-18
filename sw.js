@@ -1,36 +1,18 @@
-const CACHE_NAME = "agrosoft-cache-v4";
+const CACHE="agrosoft-v6"
 
-const urlsToCache = [
-  "/",
-  "/index.html",
-  "/style.css",
-  "/app.js",
-  "/manifest.json"
-];
+self.addEventListener("install",e=>{
+e.waitUntil(
+caches.open(CACHE).then(c=>c.addAll([
+"/",
+"/index.html",
+"/style.css",
+"/app.js"
+]))
+)
+})
 
-self.addEventListener("install", event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(urlsToCache))
-  );
-});
-
-self.addEventListener("activate", event => {
-  event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.map(cache => {
-          if (cache !== CACHE_NAME) {
-            return caches.delete(cache);
-          }
-        })
-      );
-    })
-  );
-});
-
-self.addEventListener("fetch", event => {
-  event.respondWith(
-    fetch(event.request).catch(() => caches.match(event.request))
-  );
-});
+self.addEventListener("fetch",e=>{
+e.respondWith(
+fetch(e.request).catch(()=>caches.match(e.request))
+)
+})
