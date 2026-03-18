@@ -9,46 +9,12 @@ function agregarAnimal(){
 let caravana=document.getElementById("caravana").value
 let peso=Number(document.getElementById("peso").value)
 let precioKg=Number(document.getElementById("precioKg").value)
-let precioAnimal=Number(document.getElementById("precioAnimal").value)
 
-let total=precioAnimal || peso*precioKg
+let total=peso*precioKg
 
-animales.push({caravana,peso,precioKg,precioAnimal,total})
+animales.push({caravana,peso,precioKg,total})
 
 renderAnimales()
-
-}
-
-/* SPLASH */
-
-#splash{
-
-position:fixed;
-top:0;
-left:0;
-
-width:100%;
-height:100%;
-
-background:#2e7d32;
-
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
-
-color:white;
-
-z-index:9999;
-
-transition:opacity 0.6s;
-
-}
-
-.logoSplash{
-
-width:120px;
-margin-bottom:20px;
 
 }
 
@@ -64,32 +30,26 @@ animales.forEach((a,i)=>{
 total+=a.total
 
 tbody.innerHTML+=`
-
 <tr>
 <td>${a.caravana}</td>
 <td>${a.peso}</td>
 <td>${a.precioKg}</td>
-<td>${a.precioAnimal}</td>
 <td>${a.total}</td>
 <td><button onclick="eliminarAnimal(${i})">X</button></td>
 </tr>
-
 `
 
 })
 
 document.getElementById("totalAnimales").innerText=total
-
 document.getElementById("dashAnimales").innerText=animales.length
 document.getElementById("dashTotalAnimales").innerText=total
 
 }
 
 function eliminarAnimal(i){
-
 animales.splice(i,1)
 renderAnimales()
-
 }
 
 function agregarGasto(){
@@ -98,11 +58,10 @@ let fecha=document.getElementById("fechaGasto").value
 let tipo=document.getElementById("tipoGasto").value
 let cantidad=Number(document.getElementById("cantidadGasto").value)
 let importe=Number(document.getElementById("importeGasto").value)
-let obs=document.getElementById("obsGasto").value
 
 let total=cantidad*importe
 
-gastos.push({fecha,tipo,total,obs})
+gastos.push({fecha,tipo,total})
 
 renderGastos()
 
@@ -120,15 +79,12 @@ gastos.forEach((g,i)=>{
 total+=g.total
 
 tbody.innerHTML+=`
-
 <tr>
 <td>${g.fecha}</td>
 <td>${g.tipo}</td>
 <td>${g.total}</td>
-<td>${g.obs}</td>
 <td><button onclick="eliminarGasto(${i})">X</button></td>
 </tr>
-
 `
 
 })
@@ -139,48 +95,22 @@ document.getElementById("dashTotalGastos").innerText=total
 }
 
 function eliminarGasto(i){
-
 gastos.splice(i,1)
 renderGastos()
-
 }
 
 function guardarCompra(){
 
 let compra={
-
 numero:document.getElementById("numeroCompra").value,
 fecha:document.getElementById("fechaCompra").value,
 proveedor:document.getElementById("proveedor").value,
 total:document.getElementById("totalAnimales").innerText
-
 }
 
 historial.push(compra)
 
-renderHistorial()
-
-}
-
-function renderHistorial(){
-
-let tbody=document.querySelector("#tablaHistorial tbody")
-tbody.innerHTML=""
-
-historial.forEach(h=>{
-
-tbody.innerHTML+=`
-
-<tr>
-<td>${h.numero}</td>
-<td>${h.fecha}</td>
-<td>${h.proveedor}</td>
-<td>${h.total}</td>
-</tr>
-
-`
-
-})
+alert("Guardado correctamente")
 
 }
 
@@ -194,7 +124,7 @@ XLSX.writeFile(wb1,"Compras.xls")
 let wb2=XLSX.utils.book_new()
 let ws2=XLSX.utils.json_to_sheet(animales)
 XLSX.utils.book_append_sheet(wb2,ws2,"Animales")
-XLSX.writeFile(wb2,"DetalleAnimales.xls")
+XLSX.writeFile(wb2,"Animales.xls")
 
 let wb3=XLSX.utils.book_new()
 let ws3=XLSX.utils.json_to_sheet(gastos)
@@ -203,87 +133,33 @@ XLSX.writeFile(wb3,"Gastos.xls")
 
 }
 
-function forzarVistaEscritorio(){
+/* SPLASH */
+window.onload=function(){
 
-if(window.innerWidth < 900){
-
-document.body.style.minWidth = "1200px"
-
-}
-
-}
-
-window.onload = function(){
-
-forzarVistaEscritorio()
-
-}
-
-function ajustarVista(){
-
-let ancho = window.innerWidth
-
-if(ancho < 900){
-
-document.body.style.maxWidth = "900px"
-document.body.style.margin = "auto"
-
-}
-
-}
-
-window.addEventListener("load", ajustarVista)
-window.addEventListener("resize", ajustarVista)
-
-window.addEventListener("load", function () {
-
-setTimeout(function(){
-
-let splash = document.getElementById("splash")
-
-if(splash){
-
-splash.style.opacity="0"
-
-setTimeout(function(){
-
+setTimeout(()=>{
+let splash=document.getElementById("splash")
 splash.style.display="none"
-
-},600)
+},1500)
 
 }
 
-let deferredPrompt;
+/* INSTALAR APP */
+let deferredPrompt
 
-window.addEventListener("beforeinstallprompt", (e) => {
+window.addEventListener("beforeinstallprompt", (e)=>{
 
-e.preventDefault();
+e.preventDefault()
 
-deferredPrompt = e;
+deferredPrompt=e
 
-let boton = document.createElement("button");
+let btn=document.createElement("button")
+btn.innerText="Instalar App"
+btn.style.position="fixed"
+btn.style.bottom="20px"
+btn.style.right="20px"
 
-boton.innerText="Instalar App";
+document.body.appendChild(btn)
 
-boton.style.position="fixed";
-boton.style.bottom="20px";
-boton.style.right="20px";
-boton.style.padding="12px";
-boton.style.background="#2e7d32";
-boton.style.color="white";
-boton.style.border="none";
-boton.style.borderRadius="6px";
-
-document.body.appendChild(boton);
-
-boton.addEventListener("click", ()=>{
-
-deferredPrompt.prompt();
-
-});
-
-});
-  
-},1500)
+btn.onclick=()=>deferredPrompt.prompt()
 
 })
