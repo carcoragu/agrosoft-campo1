@@ -21,7 +21,26 @@ let animales=[]
 let gastos=[]
 let historial=[]
 
-document.getElementById("numeroCompra").value=Date.now()
+alert("✅ Compra guardada correctamente")
+
+// 🔥 GENERAR NUEVO NUMERO
+document.getElementById("numeroCompra").value = Date.now()
+
+// 🔥 LIMPIAR DATOS (CLAVE)
+animales = []
+gastos = []
+
+// 🔥 LIMPIAR TABLAS
+document.querySelector("#tablaAnimales tbody").innerHTML = ""
+document.querySelector("#tablaGastos tbody").innerHTML = ""
+
+// 🔥 RESETEAR TOTALES
+document.getElementById("totalAnimales").innerText = "0"
+document.getElementById("totalGastos").innerText = "0"
+document.getElementById("costoReal").innerText = "0"
+document.getElementById("dashAnimales").innerText = "0"
+document.getElementById("dashTotalAnimales").innerText = "0"
+document.getElementById("dashTotalGastos").innerText = "0"
 
 function agregarAnimal(){
 if(!verificarLicencia()) return
