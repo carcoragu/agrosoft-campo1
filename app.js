@@ -156,8 +156,25 @@ totalGastos:totalG,
 costoReal:Math.round(costo)
 })
   
-alert("✅ Guardado")
-document.getElementById("numeroCompra").value=Date.now()
+alert("✅ Compra guardada correctamente")
+
+// 🔥 NUEVO NUMERO
+document.getElementById("numeroCompra").value = Date.now()
+
+// 🔥 LIMPIAR ARRAYS
+animales = []
+gastos = []
+
+// 🔥 LIMPIAR TABLAS
+document.querySelector("#tablaAnimales tbody").innerHTML = ""
+document.querySelector("#tablaGastos tbody").innerHTML = ""
+
+// 🔥 LIMPIAR CAMPOS 👇 (AQUÍ VA)
+document.getElementById("caravana").value=""
+document.getElementById("peso").value=""
+document.getElementById("precioKg").value=""
+document.getElementById("cantidadGasto").value=""
+document.getElementById("importeGasto").value=""
 }
 
 function exportarExcel(){
