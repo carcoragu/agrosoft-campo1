@@ -119,7 +119,7 @@ if(!verificarLicencia()) return
 
 let numero=document.getElementById("numeroCompra").value
 
-if(historial.find(h=>h.numero===numero)){
+if(historial.find(h=>h.numeroCompra===numero)){
 alert("⚠️ Ya existe")
 return
 }
@@ -129,14 +129,14 @@ let totalG=gastos.reduce((s,g)=>s+g.total,0)
 let costo=(totalA+totalG)/animales.length || 0
 
 historial.push({
-numero,
+numeroCompra: numero,   // 👈 CAMBIO CLAVE
 fecha:document.getElementById("fechaCompra").value,
 proveedor:document.getElementById("proveedor").value,
 totalAnimales:totalA,
 totalGastos:totalG,
 costoReal:Math.round(costo)
 })
-
+  
 alert("✅ Guardado")
 document.getElementById("numeroCompra").value=Date.now()
 }
