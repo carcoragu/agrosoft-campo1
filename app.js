@@ -21,9 +21,9 @@ let animales=[]
 let gastos=[]
 let historial=[]
 
-// 🔥 GENERAR NUMERO INICIAL
-document.getElementById("numeroCompra").value = Date.now()
-
+// =========================
+// ANIMALES
+// =========================
 function agregarAnimal(){
 if(!verificarLicencia()) return
 
@@ -68,6 +68,9 @@ animales.splice(i,1)
 renderAnimales()
 }
 
+// =========================
+// GASTOS
+// =========================
 function agregarGasto(){
 if(!verificarLicencia()) return
 
@@ -115,6 +118,9 @@ gastos.splice(i,1)
 renderGastos()
 }
 
+// =========================
+// GUARDAR COMPRA
+// =========================
 function guardarCompra(){
 if(!verificarLicencia()) return
 
@@ -129,7 +135,6 @@ let totalA=animales.reduce((s,a)=>s+a.total,0)
 let totalG=gastos.reduce((s,g)=>s+g.total,0)
 let costo=(totalA+totalG)/animales.length || 0
 
-// 🔥 GUARDAR TODO CON NUMERO
 historial.push({
 numeroCompra: numero,
 fecha:document.getElementById("fechaCompra").value,
@@ -141,12 +146,14 @@ animales:[...animales],
 gastos:[...gastos]
 })
 
+console.log("HISTORIAL:", historial)
+
 alert("✅ Compra guardada correctamente")
 
-// 🔥 NUEVO NUMERO
+// NUEVO NUMERO
 document.getElementById("numeroCompra").value = Date.now()
 
-// 🔥 LIMPIAR
+// LIMPIAR
 animales=[]
 gastos=[]
 
@@ -158,6 +165,9 @@ document.getElementById("totalGastos").innerText="0"
 document.getElementById("costoReal").innerText="0"
 }
 
+// =========================
+// EXPORTAR
+// =========================
 function exportarExcel(){
 if(!verificarLicencia()) return
 
@@ -166,7 +176,9 @@ alert("⚠️ No hay compras")
 return
 }
 
-// 📊 COMPRAS
+console.log("EXPORTANDO HISTORIAL:", historial)
+
+// COMPRAS
 let wb1=XLSX.utils.book_new()
 let compras=historial.map(h=>({
 numeroCompra:h.numeroCompra,
@@ -179,11 +191,11 @@ costoReal:h.costoReal
 XLSX.utils.book_append_sheet(wb1,XLSX.utils.json_to_sheet(compras),"Compras")
 XLSX.writeFile(wb1,"Compras.xls")
 
-// 📊 ANIMALES
+// ANIMALES
 let wb2=XLSX.utils.book_new()
 let todosAnimales=[]
 historial.forEach(h=>{
-h.animales.forEach(a=>{
+(h.animales || []).forEach(a=>{
 todosAnimales.push({
 numeroCompra:h.numeroCompra,
 caravana:a.caravana,
@@ -193,14 +205,17 @@ total:a.total
 })
 })
 })
+
+console.log("ANIMALES:", todosAnimales)
+
 XLSX.utils.book_append_sheet(wb2,XLSX.utils.json_to_sheet(todosAnimales),"Animales")
 XLSX.writeFile(wb2,"Animales.xls")
 
-// 📊 GASTOS
+// GASTOS
 let wb3=XLSX.utils.book_new()
 let todosGastos=[]
 historial.forEach(h=>{
-h.gastos.forEach(g=>{
+(h.gastos || []).forEach(g=>{
 todosGastos.push({
 numeroCompra:h.numeroCompra,
 fecha:g.fecha,
@@ -209,13 +224,20 @@ total:g.total
 })
 })
 })
+
+console.log("GASTOS:", todosGastos)
+
 XLSX.utils.book_append_sheet(wb3,XLSX.utils.json_to_sheet(todosGastos),"Gastos")
 XLSX.writeFile(wb3,"Gastos.xls")
 
 alert("📊 Exportado correctamente")
 }
 
+// =========================
+// INICIO
+// =========================
 window.onload=function(){
+
 setTimeout(()=>{
 document.getElementById("splash").style.display="none"
 },1500)
@@ -223,4 +245,8 @@ document.getElementById("splash").style.display="none"
 setTimeout(()=>{
 verificarLicencia()
 },1600)
+
+// 🔥 CORRECCION CLAVE
+document.getElementById("numeroCompra").value = Date.now()
+
 }
