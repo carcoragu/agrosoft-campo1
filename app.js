@@ -148,14 +148,15 @@ let totalG=gastos.reduce((s,g)=>s+g.total,0)
 let costo=(totalA+totalG)/animales.length || 0
 
 historial.push({
-numeroCompra: numero,   // 👈 CAMBIO CLAVE
+numeroCompra: numero,
 fecha:document.getElementById("fechaCompra").value,
 proveedor:document.getElementById("proveedor").value,
 totalAnimales:totalA,
 totalGastos:totalG,
-costoReal:Math.round(costo)
-})
-  
+costoReal:Math.round(costo),
+animales: [...animales],   // 🔥 GUARDAR COPIA
+gastos: [...gastos]        // 🔥 GUARDAR COPIA
+})  
 alert("✅ Compra guardada correctamente")
 
 // 🔥 NUEVO NUMERO
@@ -185,21 +186,46 @@ alert("⚠️ No hay compras")
 return
 }
 
-let wb1=XLSX.utils.book_new()
-XLSX.utils.book_append_sheet(wb1,XLSX.utils.json_to_sheet(historial),"Compras")
-XLSX.writeFile(wb1,"Compras.xls")
+// 📊 HOJA 1: COMPRAS
+let wb=XLSX.utils.book_new()
+XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(historial),"Compras")
 
-let wb2=XLSX.utils.book_new()
-XLSX.utils.book_append_sheet(wb2,XLSX.utils.json_to_sheet(animales),"Animales")
-XLSX.writeFile(wb2,"Animales.xls")
+// 📊 HOJA 2: ANIMALES (TODOS)
+let todosAnimales=[]
+historial.forEach(h=>{
+h.animales.forEach(a=>{
+todosAnimales.push({
+numeroCompra:h.numeroCompra,
+caravana:a.caravana,
+peso:a.peso,
+precioKg:a.precioKg,
+total:a.total
+})
+})
+})
 
-let wb3=XLSX.utils.book_new()
-XLSX.utils.book_append_sheet(wb3,XLSX.utils.json_to_sheet(gastos),"Gastos")
-XLSX.writeFile(wb3,"Gastos.xls")
+XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(todosAnimales),"Animales")
+
+// 📊 HOJA 3: GASTOS (TODOS)
+let todosGastos=[]
+historial.forEach(h=>{
+h.gastos.forEach(g=>{
+todosGastos.push({
+numeroCompra:h.numeroCompra,
+fecha:g.fecha,
+tipo:g.tipo,
+total:g.total
+})
+})
+})
+
+XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(todosGastos),"Gastos")
+
+// 📥 EXPORTAR TODO EN UN SOLO ARCHIVO
+XLSX.writeFile(wb,"AgroSoft_Completo.xls")
 
 alert("📊 Exportado correctamente")
 }
-
 window.onload=function(){
 
 setTimeout(()=>{
