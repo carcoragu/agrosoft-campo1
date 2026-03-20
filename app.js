@@ -250,3 +250,27 @@ verificarLicencia()
 document.getElementById("numeroCompra").value = Date.now()
 
 }
+
+let deferredPrompt;
+
+window.addEventListener("beforeinstallprompt", (e) => {
+e.preventDefault();
+deferredPrompt = e;
+
+// Mostrar botón
+let btn = document.getElementById("btnInstalar");
+btn.style.display = "block";
+
+btn.onclick = async () => {
+deferredPrompt.prompt();
+let choice = await deferredPrompt.userChoice;
+
+if(choice.outcome === "accepted"){
+console.log("Instalado")
+} else {
+console.log("Cancelado")
+}
+
+deferredPrompt = null;
+}
+});
