@@ -21,26 +21,8 @@ let animales=[]
 let gastos=[]
 let historial=[]
 
-alert("✅ Compra guardada correctamente")
-
-// 🔥 GENERAR NUEVO NUMERO
+// 🔥 GENERAR NUMERO INICIAL
 document.getElementById("numeroCompra").value = Date.now()
-
-// 🔥 LIMPIAR DATOS (CLAVE)
-animales = []
-gastos = []
-
-// 🔥 LIMPIAR TABLAS
-document.querySelector("#tablaAnimales tbody").innerHTML = ""
-document.querySelector("#tablaGastos tbody").innerHTML = ""
-
-// 🔥 RESETEAR TOTALES
-document.getElementById("totalAnimales").innerText = "0"
-document.getElementById("totalGastos").innerText = "0"
-document.getElementById("costoReal").innerText = "0"
-document.getElementById("dashAnimales").innerText = "0"
-document.getElementById("dashTotalAnimales").innerText = "0"
-document.getElementById("dashTotalGastos").innerText = "0"
 
 function agregarAnimal(){
 if(!verificarLicencia()) return
@@ -48,9 +30,9 @@ if(!verificarLicencia()) return
 let caravana=document.getElementById("caravana").value
 let peso=Number(document.getElementById("peso").value)
 let precioKg=Number(document.getElementById("precioKg").value)
+let numeroCompra=document.getElementById("numeroCompra").value
 
 let total=peso*precioKg
-let numeroCompra=document.getElementById("numeroCompra").value
 
 animales.push({numeroCompra,caravana,peso,precioKg,total})
 renderAnimales()
@@ -147,6 +129,7 @@ let totalA=animales.reduce((s,a)=>s+a.total,0)
 let totalG=gastos.reduce((s,g)=>s+g.total,0)
 let costo=(totalA+totalG)/animales.length || 0
 
+// 🔥 GUARDAR TODO CON NUMERO
 historial.push({
 numeroCompra: numero,
 fecha:document.getElementById("fechaCompra").value,
@@ -154,28 +137,25 @@ proveedor:document.getElementById("proveedor").value,
 totalAnimales:totalA,
 totalGastos:totalG,
 costoReal:Math.round(costo),
-animales: [...animales],   // 🔥 GUARDAR COPIA
-gastos: [...gastos]        // 🔥 GUARDAR COPIA
-})  
+animales:[...animales],
+gastos:[...gastos]
+})
+
 alert("✅ Compra guardada correctamente")
 
 // 🔥 NUEVO NUMERO
 document.getElementById("numeroCompra").value = Date.now()
 
-// 🔥 LIMPIAR ARRAYS
-animales = []
-gastos = []
+// 🔥 LIMPIAR
+animales=[]
+gastos=[]
 
-// 🔥 LIMPIAR TABLAS
-document.querySelector("#tablaAnimales tbody").innerHTML = ""
-document.querySelector("#tablaGastos tbody").innerHTML = ""
+document.querySelector("#tablaAnimales tbody").innerHTML=""
+document.querySelector("#tablaGastos tbody").innerHTML=""
 
-// 🔥 LIMPIAR CAMPOS 👇 (AQUÍ VA)
-document.getElementById("caravana").value=""
-document.getElementById("peso").value=""
-document.getElementById("precioKg").value=""
-document.getElementById("cantidadGasto").value=""
-document.getElementById("importeGasto").value=""
+document.getElementById("totalAnimales").innerText="0"
+document.getElementById("totalGastos").innerText="0"
+document.getElementById("costoReal").innerText="0"
 }
 
 function exportarExcel(){
@@ -186,11 +166,21 @@ alert("⚠️ No hay compras")
 return
 }
 
-// 📊 HOJA 1: COMPRAS
-let wb=XLSX.utils.book_new()
-XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(historial),"Compras")
+// 📊 COMPRAS
+let wb1=XLSX.utils.book_new()
+let compras=historial.map(h=>({
+numeroCompra:h.numeroCompra,
+fecha:h.fecha,
+proveedor:h.proveedor,
+totalAnimales:h.totalAnimales,
+totalGastos:h.totalGastos,
+costoReal:h.costoReal
+}))
+XLSX.utils.book_append_sheet(wb1,XLSX.utils.json_to_sheet(compras),"Compras")
+XLSX.writeFile(wb1,"Compras.xls")
 
-// 📊 HOJA 2: ANIMALES (TODOS)
+// 📊 ANIMALES
+let wb2=XLSX.utils.book_new()
 let todosAnimales=[]
 historial.forEach(h=>{
 h.animales.forEach(a=>{
@@ -203,10 +193,11 @@ total:a.total
 })
 })
 })
+XLSX.utils.book_append_sheet(wb2,XLSX.utils.json_to_sheet(todosAnimales),"Animales")
+XLSX.writeFile(wb2,"Animales.xls")
 
-XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(todosAnimales),"Animales")
-
-// 📊 HOJA 3: GASTOS (TODOS)
+// 📊 GASTOS
+let wb3=XLSX.utils.book_new()
 let todosGastos=[]
 historial.forEach(h=>{
 h.gastos.forEach(g=>{
@@ -218,16 +209,13 @@ total:g.total
 })
 })
 })
-
-XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(todosGastos),"Gastos")
-
-// 📥 EXPORTAR TODO EN UN SOLO ARCHIVO
-XLSX.writeFile(wb,"AgroSoft_Completo.xls")
+XLSX.utils.book_append_sheet(wb3,XLSX.utils.json_to_sheet(todosGastos),"Gastos")
+XLSX.writeFile(wb3,"Gastos.xls")
 
 alert("📊 Exportado correctamente")
 }
-window.onload=function(){
 
+window.onload=function(){
 setTimeout(()=>{
 document.getElementById("splash").style.display="none"
 },1500)
@@ -235,5 +223,4 @@ document.getElementById("splash").style.display="none"
 setTimeout(()=>{
 verificarLicencia()
 },1600)
-
 }
